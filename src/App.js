@@ -13,8 +13,11 @@ class App extends Component {
     ]
   } 
 
+
+
   handleDelete = (id) => {
-    alert(id);
+    this.setState({users : this.state.users[id] = null})
+    this.setState({users : this.state.users.filter((person)=> person != null )})
   }
 
   render() { 
@@ -30,7 +33,7 @@ class App extends Component {
             email={person.email} 
             phone={person.phone} 
             onDelete={this.handleDelete}/>
-          ))}
+           ))}
         </div>
       </div>
     );
