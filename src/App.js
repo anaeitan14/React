@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 class App extends Component {
   state = {
+    new_name: "", new_email: "", new_phone: "",
     users: [
       { name: "Doron", email: "doron.ex@gmail.com", phone: "054-1231232" },
       { name: "Eitan", email: "eitanlich2000@gmail.com", phone: "555-444-222" },
@@ -20,6 +21,10 @@ class App extends Component {
       tempUsers.splice(id, 1);
       this.setState({ users: tempUsers })
     }
+  }
+
+  HandleChange = () => {
+
   }
 
   render() {
