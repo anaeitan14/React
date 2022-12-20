@@ -11,7 +11,7 @@ class Header extends Component {
                 </div>         
                 <ul className='navbar-nav mr-auto'>
                     <li className='nav-item'>
-                        <a className='nav-link' Sx  Style="color:black; font-weight:600;" href="/">Home</a>
+                        <a className='nav-link' Style="color:black; font-weight:600;" href="/">Home</a>
                     </li>
                 </ul>    
             </nav>

@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 class App extends Component {
   state = {
-    new_name: "", new_email: "", new_phone: "",
+    new_name: "", new_mail: "", new_phone: "",
     users: [
       { name: "Doron", email: "doron.ex@gmail.com", phone: "054-1231232" },
       { name: "Eitan", email: "eitanlich2000@gmail.com", phone: "555-444-222" },
@@ -23,8 +23,24 @@ class App extends Component {
     }
   }
 
-  HandleChange = () => {
+  HandleAdd = () => {
+    if (this.state.new_name == "") {
+      return;
+    }
 
+    const temp = [{
+      name: this.state.new_name,
+      email: this.state.new_mail,
+      phone: this.state.new_phone
+    }];
+
+    const extendedUsers = temp.concat(this.state.users);
+    this.setState({users: extendedUsers});
+  }
+
+  HandleChange = event => {
+    event.preventDefault();
+    this.setState({[event.target.name]: event.target.value});
   }
 
   render() {
@@ -36,7 +52,7 @@ class App extends Component {
             <label>Name:<input type="text" name="new_name" onChange={this.HandleChange} /></label>
             <label>Email:<input type="text" name="new_mail" onChange={this.HandleChange} /></label>
             <label>Phone:<input type="text" name="new_phone" onChange={this.HandleChange} /></label>
-            <input type="button" value="Add" onClick={() => this.handleAdd} />
+            <input type="button" value="Add" onClick={this.HandleAdd} />
           </form>
           {this.state.users.map((person, idx) => (
             <Contact
