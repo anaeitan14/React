@@ -8,8 +8,9 @@ class App extends Component {
     new_name: "", new_mail: "", new_phone: "", search: "",
     users: [],
     toggleAdd: false,
-    searchQuery: false,
-    searchArray: []
+    searchArray: [],
+    search: "",
+    searchToggle:false
   }
 
 
@@ -40,7 +41,6 @@ class App extends Component {
   HandleChange = event => {
     event.preventDefault();
     this.setState({ [event.target.name]: event.target.value });
-    console.log(this.state);
   }
 
   clickPersonAdd = () => {
@@ -59,12 +59,11 @@ class App extends Component {
 
   handleSort = () => {
     let tempUsers = this.state.users;
-    console.log(tempUsers);
     tempUsers.sort((a, b) => {
-      if (a.name > b.name) {
+      if (a.name < b.name) {
         return -1;
       }
-      if (a.name < b.name) {
+      if (a.name > b.name) {
         return 1;
       }
       return 0;
@@ -74,24 +73,17 @@ class App extends Component {
   }
 
   handleSearch = () => {
-    let search_query = this.state.search;
-    let searchArray = this.state.users.filter((user) => {
-      return user.name.includes(search_query);
+    let query = this.state.search;
+
+    let results = this.state.users.filter((user) => {
+      return user.name.includes(query);
     })
 
-    console.log(searchArray)
+    if (results.length > 0) {
+      this.setState({searchToggle:true});
+    }
 
-    searchArray.map((person, idx) => (
-      <Contact
-        key={idx}
-        id={idx}
-        name={person.name}
-        email={person.email}
-        phone={person.phone}
-        onDelete={this.handleDelete} />
-    ))
-
-
+    this.setState({searchArray:results})
   }
 
   render() {
@@ -109,10 +101,10 @@ class App extends Component {
               <input type="button" value="Add" onClick={this.HandleAdd} />
             </form>
           ) : null}
-          <input type="text" placeholder="Search a name..." name="search" onChange={this.HandleChange} Style="margin:20px;"></input>
-          <input type="button" value="Find" onClick={this.handleSearch}></input>
+          <input type="text" placeholder="Search a name..." onChange={this.HandleChange} name="search" Style="margin:10px;"></input>
+          <input type="button" value="Find" onClick={this.handleSearch} Style="margin:20px;"></input>
           <input type="button" onClick={this.handleSort} value="Sort alphabetically"></input>
-          {this.state.users.map((person, idx) => (
+          {!this.state.searchToggle ? this.state.users.map((person, idx) => (
             <Contact
               key={idx}
               id={idx}
@@ -120,7 +112,16 @@ class App extends Component {
               email={person.email}
               phone={person.phone}
               onDelete={this.handleDelete} />
-          ))}
+          )) : 
+          this.state.searchArray.map((person, idx) => (
+            <Contact
+              key={idx}
+              id={idx}
+              name={person.name}
+              email={person.email}
+              phone={person.phone}
+              onDelete={this.handleDelete} />
+            ))}
         </div>
       </div>
     );
