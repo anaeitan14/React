@@ -10,7 +10,7 @@ class App extends Component {
     toggleAdd: false,
     searchArray: [],
     search: "",
-    searchToggle:false
+    searchToggle: false
   }
 
 
@@ -20,6 +20,7 @@ class App extends Component {
       let tempUsers = this.state.users;
       tempUsers.splice(id, 1);
       this.setState({ users: tempUsers })
+      this.setState({ searchArray: tempUsers })
     }
   }
 
@@ -36,6 +37,7 @@ class App extends Component {
 
     const extendedUsers = temp.concat(this.state.users);
     this.setState({ users: extendedUsers });
+    this.setState({ searchArray: extendedUsers });
   }
 
   HandleChange = event => {
@@ -60,10 +62,10 @@ class App extends Component {
   handleSort = () => {
     let tempUsers = this.state.users;
     tempUsers.sort((a, b) => {
-      if (a.name < b.name) {
+      if (a.name.toLowerCase() < b.name.toLowerCase()) {
         return -1;
       }
-      if (a.name > b.name) {
+      if (a.name.toLowerCase() > b.name.toLowerCase()) {
         return 1;
       }
       return 0;
@@ -75,15 +77,15 @@ class App extends Component {
   handleSearch = () => {
     let query = this.state.search;
 
+    if (query !== '') {
+      this.setState({ searchToggle: true });
+    }
+
     let results = this.state.users.filter((user) => {
       return user.name.includes(query);
     })
 
-    if (results.length > 0) {
-      this.setState({searchToggle:true});
-    }
-
-    this.setState({searchArray:results})
+    this.setState({ searchArray: results })
   }
 
   render() {
@@ -112,16 +114,17 @@ class App extends Component {
               email={person.email}
               phone={person.phone}
               onDelete={this.handleDelete} />
-          )) : 
-          this.state.searchArray.map((person, idx) => (
-            <Contact
-              key={idx}
-              id={idx}
-              name={person.name}
-              email={person.email}
-              phone={person.phone}
-              onDelete={this.handleDelete} />
+          )) :
+            this.state.searchArray.map((person, idx) => (
+              <Contact
+                key={idx}
+                id={idx}
+                name={person.name}
+                email={person.email}
+                phone={person.phone}
+                onDelete={this.handleDelete} />
             ))}
+          {console.log(this.state.searchToggle)}
         </div>
       </div>
     );
