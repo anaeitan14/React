@@ -8,9 +8,8 @@ class App extends Component {
     new_name: "", new_mail: "", new_phone: "", search: "",
     users: [],
     toggleAdd: false,
-    searchArray: [],
-    search: "",
-    searchToggle: false
+    searchToggle: false,
+    searchArray: []
   }
 
 
@@ -20,7 +19,7 @@ class App extends Component {
       let tempUsers = this.state.users;
       tempUsers.splice(id, 1);
       this.setState({ users: tempUsers })
-      this.setState({ searchArray: tempUsers })
+      this.setState({searchArray : tempUsers})
     }
   }
 
@@ -37,7 +36,7 @@ class App extends Component {
 
     const extendedUsers = temp.concat(this.state.users);
     this.setState({ users: extendedUsers });
-    this.setState({ searchArray: extendedUsers });
+    this.setState({searchArray : extendedUsers})
   }
 
   HandleChange = event => {
@@ -79,6 +78,8 @@ class App extends Component {
 
     if (query !== '') {
       this.setState({ searchToggle: true });
+    } else {
+      this.setState({searchToggle : false})
     }
 
     let results = this.state.users.filter((user) => {
@@ -106,23 +107,23 @@ class App extends Component {
           <input type="text" placeholder="Search a name..." onChange={this.HandleChange} name="search" Style="margin:10px;"></input>
           <input type="button" value="Find" onClick={this.handleSearch} Style="margin:20px;"></input>
           <input type="button" onClick={this.handleSort} value="Sort alphabetically"></input>
-          {!this.state.searchToggle ? this.state.users.map((person, idx) => (
-            <Contact
-              key={idx}
-              id={idx}
-              name={person.name}
-              email={person.email}
-              phone={person.phone}
-              onDelete={this.handleDelete} />
+          {this.state.searchToggle ? this.state.searchArray.map((person, idx) => (
+           <Contact
+           key={idx}
+           id={idx}
+           name={person.name}
+           email={person.email}
+           phone={person.phone}
+           onDelete={this.handleDelete} />
           )) :
-            this.state.searchArray.map((person, idx) => (
-              <Contact
-                key={idx}
-                id={idx}
-                name={person.name}
-                email={person.email}
-                phone={person.phone}
-                onDelete={this.handleDelete} />
+          this.state.users.map((person, idx) => (
+           <Contact
+           key={idx}
+           id={idx}
+           name={person.name} 
+           email={person.email}
+           phone={person.phone}
+           onDelete={this.handleDelete} />
             ))}
           {console.log(this.state.searchToggle)}
         </div>
