@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import Contact from "./components/Contact";
 import 'bootstrap/dist/css/bootstrap.css';
 
+
 class App extends Component {
   state = {
     new_name: "", new_mail: "", new_phone: "", search: "",
@@ -14,7 +15,14 @@ class App extends Component {
 
 
   handleDelete = (id) => {
-    const areYouSure = window.confirm(`Do you want to delete the contact ${this.state.users[id].name}?`)
+    let areYouSure;
+
+    if(this.state.searchToggle) {
+      areYouSure = window.confirm(`Do you want to delete the contact ${this.state.searchArray[id].name}?`)
+    } else {   
+      areYouSure = window.confirm(`Do you want to delete the contact ${this.state.users[id].name}?`)
+    }
+
     if (areYouSure) {
       let tempUsers = this.state.users;
       tempUsers.splice(id, 1);
@@ -78,8 +86,6 @@ class App extends Component {
 
     if (query !== '') {
       this.setState({ searchToggle: true });
-    } else {
-      this.setState({searchToggle : false})
     }
 
     let results = this.state.users.filter((user) => {
